@@ -1,9 +1,8 @@
-import { reactive, readonly, inject, computed } from "vue";
-let googleAuthIsInit = false;
-let googleAuthIsAuthorized = false;
-const Vue3GoogleOauth = reactive({
+import { reactive, readonly } from "vue";
+let Vue3GoogleOauth;
+Vue3GoogleOauth = reactive({
   isInit: false,
-  isAuthorized: false
+  isAuthorized: false,
 })
 const googleAuth = (function () {
 
@@ -40,19 +39,19 @@ const googleAuth = (function () {
   function Auth() {
     if (!(this instanceof Auth))
       return new Auth();
-    this.GoogleAuth = null; /* window.gapi.auth2.getAuthInstance() */
-    this.prompt = null;
-
+    this.instance = null; /* window.gapi.auth2.getAuthInstance() */
     this.load = (config) => {
       installClient()
         .then(() => {
           return initClient(config)
         })
         .then((gapi) => {
-          this.GoogleAuth = gapi.auth2.getAuthInstance();
+          this.instance = gapi.auth2.getAuthInstance();
+
           this.prompt = config.prompt;
-          Vue3GoogleOauth.isInit = true
-          Vue3GoogleOauth.isAuthorized = this.GoogleAuth.isSignedIn.get();
+          Vue3GoogleOauth.instance = gapi.auth2.getAuthInstance();
+          Vue3GoogleOauth.isInit = true;
+          Vue3GoogleOauth.isAuthorized = this.instance.isSignedIn.get();
         }).catch((error) => {
           console.error(error);
         })
@@ -60,14 +59,14 @@ const googleAuth = (function () {
 
     this.signIn = () => {
       return new Promise((resolve, reject) => {
-        if (!this.GoogleAuth) {
+        if (!this.instance) {
           reject(false)
           return
         }
-        this.GoogleAuth.signIn()
+        this.instance.signIn()
           .then(googleUser => {
-            Vue3GoogleOauth.isAuthorized = this.GoogleAuth.isSignedIn.get();
-            resolve(googleUser);;
+            Vue3GoogleOauth.isAuthorized = this.instance.isSignedIn.get();
+            resolve(googleUser);
           })
           .catch(error => {
             reject(error);
@@ -77,11 +76,11 @@ const googleAuth = (function () {
 
     this.getAuthCode = () => {
       return new Promise((resolve, reject) => {
-        if (!this.GoogleAuth) {
+        if (!this.instance) {
           reject(false)
           return
         }
-        this.GoogleAuth.grantOfflineAccess({ prompt: this.prompt })
+        this.instance.grantOfflineAccess({ prompt: this.prompt })
           .then(function (resp) {
             resolve(resp.code)
           })
@@ -93,11 +92,11 @@ const googleAuth = (function () {
 
     this.signOut = () => {
       return new Promise((resolve, reject) => {
-        if (!this.GoogleAuth) {
+        if (!this.instance) {
           reject(false)
           return
         }
-        this.GoogleAuth.signOut()
+        this.instance.signOut()
           .then(() => {
             Vue3GoogleOauth.isAuthorized = false;
             resolve(true)
@@ -114,7 +113,8 @@ const googleAuth = (function () {
 
 export default {
   install: (app, options) => {
-    console.log('install vue3-google-oauth2')
+    /* eslint-disable */
+    //set config
     let config = null
     let defaultConfig = { scope: 'profile email', prompt: 'select_account' };
     if (typeof options === 'object') {
@@ -125,14 +125,11 @@ export default {
     } else {
       throw new TypeError('invalid option type. Object type accepted only');
     }
-    googleAuth.load(defaultConfig);
-    app.config.globalProperties.$translate = googleAuth;
-    // app.provide('gAuthIsInit', googleAuthIsInit);
-    // app.provide('gAuthIsAuthorized', googleAuthIsAuthorized);
 
-    app.provide('Vue3GoogleOauth', readonly(Vue3GoogleOauth))
-
-    console.log('provided')
+    //Install Vue plugin
+    googleAuth.load(config);
+    app.config.globalProperties.$gAuth = googleAuth;
+    app.provide('Vue3GoogleOauth', readonly(Vue3GoogleOauth));
 
   }
 }
