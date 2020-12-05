@@ -1,6 +1,6 @@
 # vue3-google-oauth2-front-sample
 > Sample project for [vue3-google-oauth2](https://github.com/guruahn/vue3-google-oauth2) plugin.
-> [Demo](https://stupefied-darwin-da9533.netlify.app/)
+> [Demo](https://boring-lamport-199b25.netlify.app/)
 ## Project setup
 
 ### 1. install
