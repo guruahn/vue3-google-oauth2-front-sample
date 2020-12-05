@@ -1,2 +1,24 @@
-# vue-google-oauth2-front-sample-vue3
- vue3환경에서의 vue-google-oauth2 테스트.
+# vue3-google-oauth2-front-sample
+> Sample project for [vue3-google-oauth2](https://github.com/guruahn/vue3-google-oauth2) plugin.
+> [Demo](https://stupefied-darwin-da9533.netlify.app/)
+## Project setup
+
+### 1. install
+```
+yarn install
+```
+### 2. set your google clientId
+> .env file
+```yaml
+VITE_GAUTH_CLIENT_ID=394838939483-rq7d2rfj39gkdfjd9jenu670ounoi01.googleusercontent.com
+```
+
+### Compiles and hot-reloads for development
+```
+yarn run dev
+```
+
+### Compiles and minifies for production
+```
+yarn run build
+```
