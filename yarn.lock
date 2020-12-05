@@ -2015,6 +2015,11 @@ vite@^1.0.0-rc.1:
     vue "^3.0.0-rc.5"
     ws "^7.2.3"
 
+vue3-google-oauth2@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue3-google-oauth2/-/vue3-google-oauth2-1.0.1.tgz#874e207fee4ae17c28a39fdf758fa641c568e19e"
+  integrity sha512-2QB/Aa12Yp5IopSjFYugkJrjcxqGAlYOYZFo3nHzrl5QcTt2/spjfALo/LakSv1cTO+RQBxH/IBdoz/8CaFDqg==
+
 vue@^3.0.0-rc.1, vue@^3.0.0-rc.5:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.0.0.tgz#cfb5df5c34efce319b113a1667d12b74dcfd9c90"
