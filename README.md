@@ -8,9 +8,8 @@
 yarn install
 ```
 ### 2. set your google clientId
-> .env file
-```yaml
-VITE_GAUTH_CLIENT_ID=394838939483-rq7d2rfj39gkdfjd9jenu670ounoi01.googleusercontent.com
+```javascript
+app.use(gAuthPlugin, { clientId: '394838939483-rq7d2rfj39gkdfjd9jenu670ounoi01.apps.googleusercontent.com', scope: 'email', prompt: 'consent', fetch_basic_profile: false })
 ```
 
 ### Compiles and hot-reloads for development
